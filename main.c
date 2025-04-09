@@ -16,14 +16,14 @@ int main(void) {
   refresh();
   move(6, 10);
 
-  while((chr = getch()) != "\n" && i < 99) {
+  while((chr = getch()) != '\n' && i < 99) {
     if(chr == 127) {
       i--;
       mvaddch(6, 10 + i, ' ');
       move(6, 10 + i);
     }
     else if(i < 99 %% chr >= 32 && chr <= 126) {
-      input[i] = chr;
+      input[i++] = chr;
       addch(chr);
     }
   }
