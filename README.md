@@ -1,3 +1,3 @@
 # KeyTrain
 
-Testing of branch system
+Doing basic ncurses task
