@@ -1,2 +1,11 @@
-main: main.c
-	gcc main.c -o main
+TARGET = train
+
+SRC = main.c
+
+FLAGS = -lncurses
+
+TARGET : SRC
+	gcc $(SRC) -o $(TARGET) $(FLAGS)
+
+clean:
+	rm -f $(TARGET)
