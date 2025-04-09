@@ -1,8 +1,14 @@
 #include <stdio.h>
+#include <ncurses.h>
 
-int main(void)
-{
-  printf("hello from KeyTrain!\n");
+int main(void) {
+  initscr();
   
-  return 0;
+  printw("Hello world");
+  refresh();
+
+  getch();
+  endwin();
+
+  return 0;    
 }
