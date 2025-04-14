@@ -1,13 +1,19 @@
+ifeq ($(findstring MINGW, $(shell uname -s)), MINGW)
+	MINGW = 1
+endif
+
+CC = gcc
 TARGET = train
-
 SRC = main.c
-
-LIBS = -lncurses
-
+LIBS =
 CFLAGS = -Wall -Wextra
 
-$(TARGET) : $(SRC)
-	gcc $(CFLAGS) $(SRC) -o $(TARGET) $(LIBS)
+ifdef MINGW
+	LIBS += -lncursesw
+	CFLAGS += -I/mingw64/include/ncurses/
+else
+	LIBS += -lncurses
+endif
 
-clean:
-	rm -f $(TARGET)
+$(TARGET): Makefile $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET) $(LIBS)
