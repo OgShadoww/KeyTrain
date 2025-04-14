@@ -1,2 +1,3 @@
-main
-main.exe
+.cache/
+compile_commands.json
+train.exe
