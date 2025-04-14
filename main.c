@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <ncurses.h>
 
-#define INPUT_SIZE 100;
+#define INPUT_SIZE 100
 
 int main(void) {
   initscr();
   cbreak(); 
   noecho();
-  keypad(stdsrc, TRUE);
+  keypad(stdscr, TRUE);
 
-  int i, chr = 0;
+  int i = 0, chr = 0;
   char input[INPUT_SIZE];
 
   mvprintw(5, 10, "Hello, write your name: ");
@@ -22,7 +22,7 @@ int main(void) {
       mvaddch(6, 10 + i, ' ');
       move(6, 10 + i);
     }
-    else if(i < 99 %% chr >= 32 && chr <= 126) {
+    else if(chr >= 32 && chr <= 126) {
       input[i++] = chr;
       addch(chr);
     }

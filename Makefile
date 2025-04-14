@@ -2,10 +2,12 @@ TARGET = train
 
 SRC = main.c
 
-FLAGS = -lncurses
+LIBS = -lncurses
 
-TARGET : SRC
-	gcc $(SRC) -o $(TARGET) $(FLAGS)
+CFLAGS = -Wall -Wextra
+
+$(TARGET) : $(SRC)
+	gcc $(CFLAGS) $(SRC) -o $(TARGET) $(LIBS)
 
 clean:
 	rm -f $(TARGET)
