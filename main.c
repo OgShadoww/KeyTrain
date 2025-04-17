@@ -39,6 +39,29 @@ char *read_file(const char *filepath, size_t *len)
 
 #define TEXT_DIR "text"
 
+void center_text(char *text, size_t text_len) {
+  int width = getmaxx(stdscr);
+  int str_len = width / 2;
+  char *buff = malloc(str_len);
+  int y = 5;
+  int x = (width - strlen(buff)) / 2;
+  int k = 0;
+
+  for(size_t i = 0; i < text_len; i++) {
+    buff[k] = text[i];
+    if(text[i] == ' ') {
+      if(k >= str_len - 2) {
+        mvprintw(y++, x, buff);
+        free(buff);
+        k = 0;
+      }
+    }
+    k++;
+  }
+
+  return;
+}
+
 int main(int argc, char **argv) {
   // TODO: parse args
   (void) argc;
@@ -48,18 +71,14 @@ int main(int argc, char **argv) {
   char *text = read_file(TEXT_DIR"/lorem.txt", &text_len);
   
   initscr();
-  cbreak(); 
-  noecho();
-  keypad(stdscr, TRUE);
 
-  printw("%s", text);
-  
-  refresh();
+  // Print center text  
+  center_text(text, text_len);   
   getch();
 
   endwin();
 
-  free(text);
+  free(text);  
 
   return 0;    
 }
