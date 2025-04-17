@@ -43,20 +43,40 @@ void center_text(char *text, size_t text_len) {
   int width = getmaxx(stdscr);
   int str_len = width / 2;
   char *buff = malloc(str_len);
+  char word[128];
   int y = 5;
-  int x = (width - strlen(buff)) / 2;
-  int k = 0;
+  int x = 0;
+  size_t k = 0;
+  size_t w = 0;
 
   for(size_t i = 0; i < text_len; i++) {
-    buff[k] = text[i];
+    word[w++] = text[i];
+
     if(text[i] == ' ') {
-      if(k >= str_len - 2) {
+      int size =  k + w + 1;
+      if(size >= str_len - 2) {
+        buff[k] = '\0';
+        x = (width - strlen(buff)) / 2;
         mvprintw(y++, x, buff);
-        free(buff);
         k = 0;
+        for(size_t j = 0; j < w; j++) {
+          buff[j] = word[j];
+        }
+        w = 0;
+      } 
+      if(size < str_len - 2) {
+        buff[k++] = ' ';
+        for (size_t j = 0; j < w; j++) {
+          buff[k++] = word[j];
+        }
+        w = 0;
       }
     }
-    k++;
+  }
+  if (k > 0) {
+    buff[k] = '\0';
+    x = (width - strlen(buff)) / 2;
+    mvprintw(y++, x, buff);
   }
 
   return;
