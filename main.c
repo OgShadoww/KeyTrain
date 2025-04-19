@@ -41,42 +41,42 @@ char *read_file(const char *filepath, size_t *len)
 
 void center_text(char *text, size_t text_len) {
   int width = getmaxx(stdscr);
-  int str_len = width / 2;
-  char *buff = malloc(str_len);
-  char word[128];
-  int y = 5;
-  int x = 0;
-  size_t k = 0;
-  size_t w = 0;
+  int str_len = (width / 2) - 10; // max len of string
+  int y = 2;  // initial y position
+  int x = 0;  // initial x position
+  int offset = 0; // initial position of each new line
+  size_t k = 0; // len of current line
+  size_t w = 0; // len of current word
 
   for(size_t i = 0; i < text_len; i++) {
-    word[w++] = text[i];
+    w++;
 
     if(text[i] == ' ') {
-      int size =  k + w + 1;
-      if(size >= str_len - 2) {
-        buff[k] = '\0';
-        x = (width - strlen(buff)) / 2;
-        mvprintw(y++, x, buff);
-        k = 0;
-        for(size_t j = 0; j < w; j++) {
-          buff[j] = word[j];
-        }
+      int size =  k + w;
+
+      if(size >= str_len) {
+        if (offset + size <= text_len) {
+          x = (width - size) / 2;
+          mvprintw(y++, x, "%.*s", size, text + offset);
+        }    
+        offset += size;
         w = 0;
+        k = 0;
       } 
-      if(size < str_len - 2) {
-        buff[k++] = ' ';
-        for (size_t j = 0; j < w; j++) {
-          buff[k++] = word[j];
-        }
+      else {
+        k += w;
         w = 0;
       }
     }
   }
-  if (k > 0) {
-    buff[k] = '\0';
-    x = (width - strlen(buff)) / 2;
-    mvprintw(y++, x, buff);
+
+  if (text[text_len - 1] != ' ') {
+    k += w;
+    offset = text_len - k; 
+  } 
+  if (k > 0 && offset + k <= text_len) {
+    x = (width - k) / 2;
+    mvprintw(y++, x, "%.*s", k, text + offset);
   }
 
   return;
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
   initscr();
 
   // Print center text  
-  center_text(text, text_len);   
+  center_text(text, text_len);
   getch();
 
   endwin();
